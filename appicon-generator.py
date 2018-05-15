@@ -22,7 +22,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import sys, argparse
+import os, sys, argparse
+from PIL import Image
 
 icons = {
     '20pt': (20, [1, 2, 3]),
@@ -58,12 +59,49 @@ def parse_args():
     if not any(vars(args).values()):
         parser.print_help()
         sys.exit(1)
+    else:
+        if not os.path.isfile(args.image):
+            print("[ERROR] The master image you specifed doesn't seem to exist?")
+            sys.exit(1)
 
     process(args)
 
 
+def icons_generator():
+    for variation, icon_details in icons.items():
+        size = icon_details[0]
+        scales = icon_details[1]
+
+        for scale in scales:
+            yield variation, size, scale
+
+
+def get_destination(output_dir, name, variation, scale):
+    scale_str = "@%dx" % scale
+    return '%s/%s-%s%s.png' % (output_dir, name, variation, scale_str)
+
+
 def process(args):
-    print(args)
+    # Load our master image.
+    master = Image.open(args.image)
+
+    # Prep our vars.
+    output_dir = 'output' if args.output is None else args.output
+    name = 'AppIcon' if args.name is None else args.name
+
+    # Attempt to create our directory if it doesn't exist.
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir)
+
+        if not os.path.isdir(output_dir):
+            print("[ERROR] An error occured creating your output directory (%s)" % output_dir)
+            sys.exit(1)
+
+    # Generate our variations.
+    for variation, size, scale in icons_generator():
+        image_size = int(size * scale)
+        image = master.resize((image_size, image_size), Image.ANTIALIAS)
+        image.save(get_destination(output_dir, name, variation, scale))
 
 
 if __name__ == "__main__":
