@@ -25,18 +25,36 @@
 import os, sys, argparse
 from PIL import Image
 
+# Icon sizes taken from:
+# https://developer.apple.com/library/content/qa/qa1686/_index.html
+
+# Icon size/scales for modern iOS versions.
 icons = {
+    # iPhone
     '20pt': (20, [1, 2, 3]),
     '29pt': (29, [1, 2, 3]),
     '40pt': (40, [1, 2, 3]),
     '60pt': (60, [2, 3]),
     '76pt': (76, [1, 2]),
     '83.5pt': (83.5, [2]),
-    '1024pt': (1024, [1])
+    '1024pt': (1024, [1]),
+
+    # iPad
+    'iTunesArtwork': (512, [1, 2]),
+}
+
+# Icon size/scales for versions of iOS 6.1 and earlier.
+old_icons = {
+    # iPhone / iPad
+    '57pt': (57, [1, 2]),
+    '72pt': (72, [1, 2]),
+    '50pt': (50, [1, 2])
 }
 
 
 def parse_args():
+    print_banner()
+
     parser = argparse.ArgumentParser(
         description="Quickly and easily creates all the AppIcons required during iOS development.",
         epilog="Please report any bugs at https://github.com/mc-soft/appicon-generator"
@@ -52,8 +70,14 @@ def parse_args():
                         required=False)
 
     parser.add_argument("-n", "--name",
-                        help="You can change the name of the output icons. (Example: {NAME}20pt@1x.png) [Default: AppIcon]",
+                        help="You can change the name of the output icons."
+                             "(Example: {NAME}20pt@1x.png) [Default: AppIcon]",
                         required=False)
+
+    parser.add_argument("-a", "--all",
+                        help="By default only icon sizes required for iOS 6.2 and later are generated, if you wish "
+                             "to generate icons for iOS 6.1 and earlier you need to set this.",
+                        action="store_true", required=False)
 
     args = parser.parse_args()
     if not any(vars(args).values()):
@@ -67,8 +91,8 @@ def parse_args():
     process(args)
 
 
-def icons_generator():
-    for variation, icon_details in icons.items():
+def icons_generator(array):
+    for variation, icon_details in array.items():
         size = icon_details[0]
         scales = icon_details[1]
 
@@ -79,6 +103,25 @@ def icons_generator():
 def get_destination(output_dir, name, variation, scale):
     scale_str = "@%dx" % scale
     return '%s/%s-%s%s.png' % (output_dir, name, variation, scale_str)
+
+
+def generate_variations(master, output_dir, name, generator):
+    for variation, size, scale in generator:
+        image_size = int(size * scale)
+        image = master.resize((image_size, image_size), Image.ANTIALIAS)
+        dest = get_destination(output_dir, name, variation, scale)
+
+        sys.stdout.write("Saving %s -> " % dest)
+        image.save(dest)
+        print("Done!")
+
+
+def print_banner():
+    print("########################################################\n")
+    print("\tappicon-generator.py\t\t\t\t\tv1.0\n")
+    print("\tMatthew Croston")
+    print("\thttps://github.com/mc-soft/appicon-generator\n")
+    print("########################################################\n")
 
 
 def process(args):
@@ -98,10 +141,11 @@ def process(args):
             sys.exit(1)
 
     # Generate our variations.
-    for variation, size, scale in icons_generator():
-        image_size = int(size * scale)
-        image = master.resize((image_size, image_size), Image.ANTIALIAS)
-        image.save(get_destination(output_dir, name, variation, scale))
+    generate_variations(master, output_dir, name, icons_generator(icons))
+
+    if args.all:
+        print("\n[INFO] -all option has been specified, generating additional images.\n")
+        generate_variations(master, output_dir, name, icons_generator(old_icons))
 
 
 if __name__ == "__main__":
