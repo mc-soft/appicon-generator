@@ -112,7 +112,7 @@ def generate_variations(master, output_dir, name, generator):
         dest = get_destination(output_dir, name, variation, scale)
 
         sys.stdout.write("Saving %s -> " % dest)
-        image.save(dest)
+        image.save(dest, quality=95)
         print("Done!")
 
 
