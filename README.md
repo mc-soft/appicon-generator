@@ -23,8 +23,8 @@ pip install pillow
 
 appicon-generator has been created to be as user friendly as possible. At it's most basic you simply need to provide a master image (1024x1024) and issue the following command:
 
-```python
-./appicon-generator.py -i master.png
+```console
+foo@bar:~$ ./appicon-generator.py -i master.png
 ```
 
 This will generate create a folder in the working directory called output where all your iOS app icons will be saved.
@@ -49,11 +49,11 @@ foo@bar:~$ ./appicon-generator.py -i master.png -o custom-dir
 
 By default, the file name structure for a 29pt image at 2x scale is:
 
-*AppIcon-29pt@2x.png*
+*AppIcon-29pt@2x*
 
 If you wish to change this to something custom such as:
 
-*MyCustomName-29pt@2x.png*
+*MyCustomName-29pt@2x*
 
 This can be done by executing the script with the name (-n, --name) argument.
 
