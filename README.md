@@ -33,32 +33,32 @@ This will generate create a folder in the working directory called output where 
 
 Below I will cover the main script arguments, if at anytime you wish to view the full list of arguments you can do so by executing the script with the help (-h, --help) argument.
 
-```python
-./appicon-generator.py -h
+```console
+foo@bar:~$ ./appicon-generator.py -h
 ```
 
 #### Custom Output Directory
 
 You can specify a custom out directory (relative or absolute path) by executing the script with the output (-o, --output) argument. You should be aware that this directory will be created if it does not currently exist.
 
-```python
-./appicon-generator.py -i master.png -o custom-dir
+```console
+foo@bar:~$ ./appicon-generator.py -i master.png -o custom-dir
 ```
 
 #### Custom File Name
 
 By default, the file name structure for a 29pt image at 2x scale is:
 
-* AppIcon-29pt@2x.png
+*AppIcon-29pt@2x.png*
 
 If you wish to change this to something custom such as:
 
-* MyCustomName-29pt@2x.png
+*MyCustomName-29pt@2x.png*
 
 This can be done by executing the script with the name (-n, --name) argument.
 
-```python
-./appicon-generator.py -i master.png -n MyCustomName
+```console
+foo@bar:~$ ./appicon-generator.py -i master.png -n MyCustomName
 ```
 
 #### iOS 6.1 and earlier sizes
@@ -71,8 +71,8 @@ https://developer.apple.com/library/content/qa/qa1686/_index.html
 
 By default, appicon-generator only generates the latest AppIcon sizes, if you are generating icons for a project that is using iOS 6.1 or earlier you will need to generate the icons using the all (-a, --all) argument.
 
-```python
-./appicon-generator.py -i master.png -a
+```console
+foo@bar:~$ ./appicon-generator.py -i master.png -a
 ```
 
 ## Authors
