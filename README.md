@@ -21,31 +21,31 @@ pip install pillow
 
 ## Usage
 
-appicon-generator has been created to be as user friendly as possible. At it's most basic you simply need to provide a master image (1024x1024) and issue the following command:
+appicon-generator has been created to be as user friendly as possible. At it's most basic you simply need to provide a master image (1024x1024 pixels) and issue the following command:
 
 ```console
-foo@bar:~$ ./appicon-generator.py -i master.png
+user@mac:~$ ./appicon-generator.py -i master.png
 ```
 
-This will generate create a folder in the working directory called output where all your iOS app icons will be saved.
+This will create a folder in the working directory called output where all your iOS app icons will be saved.
 
 ### Additional arguments
 
-Below I will cover the main script arguments, if at anytime you wish to view the full list of arguments you can do so by executing the script with the help (-h, --help) argument.
+Below I will cover the optional script arguments, if at anytime you wish to view the full list of arguments you can do so by executing the script with the help (-h, --help) argument.
 
 ```console
-foo@bar:~$ ./appicon-generator.py -h
+user@mac:~$ ./appicon-generator.py -h
 ```
 
-#### Custom Output Directory
+### Custom Output Directory
 
-You can specify a custom out directory (relative or absolute path) by executing the script with the output (-o, --output) argument. You should be aware that this directory will be created if it does not currently exist.
+You can specify a custom output directory (relative or absolute path) by executing the script with the output (-o, --output) argument. You should be aware that this directory will be created if it does not currently exist.
 
 ```console
-foo@bar:~$ ./appicon-generator.py -i master.png -o custom-dir
+user@mac:~$ ./appicon-generator.py -i master.png -o custom-dir
 ```
 
-#### Custom File Name
+### Custom File Name
 
 By default, the file name structure for a 29pt image at 2x scale is:
 
@@ -58,10 +58,10 @@ If you wish to change this to something custom such as:
 This can be done by executing the script with the name (-n, --name) argument.
 
 ```console
-foo@bar:~$ ./appicon-generator.py -i master.png -n MyCustomName
+user@mac:~$ ./appicon-generator.py -i master.png -n MyCustomName
 ```
 
-#### iOS 6.1 and earlier sizes
+### iOS 6.1 and earlier sizes
 
 As per the documentation (found at the link below), the default AppIcon sizes changed for iOS version later than 6.1.
 
@@ -69,10 +69,10 @@ As per the documentation (found at the link below), the default AppIcon sizes ch
 https://developer.apple.com/library/content/qa/qa1686/_index.html
 ```
 
-By default, appicon-generator only generates the latest AppIcon sizes, if you are generating icons for a project that is using iOS 6.1 or earlier you will need to generate the icons using the all (-a, --all) argument.
+By default, appicon-generator only generates the latest AppIcon sizes, if you are generating icons for a project that is using iOS 6.1 or earlier you will need to generate your required icons by using the all (-a, --all) argument.
 
 ```console
-foo@bar:~$ ./appicon-generator.py -i master.png -a
+user@mac:~$ ./appicon-generator.py -i master.png -a
 ```
 
 ## Authors
